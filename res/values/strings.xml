@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MedHub</string>
+    <string name="login_message">MedHub - Login</string>
+    <string name="all_symptoms_message">All Symptoms</string>
+    <string name="sign_up_message">Sign Up</string>
+    <string name="patient_profile_message">Patient Profile</string>
+    <string name="doctor_profile_message">Doctor Profile</string>
+    <string name="shared_with_message">Shared With:</string>
+    <string name="doctor_rec_message">Favorite Doctors (Recommendations):</string>
+    <string name="posted_symptoms_message">Posted Symptoms:</string>
+    <string name="list_of_patients_message">List of Patients:</string>
+    <string name="email_hint">Enter Your Email Address</string>
+    <string name="password_hint">Enter Your Password</string>
+    <string name="confirm_password_hint">Confirm Your Password</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="cred_hint">Credentials</string>
+    <string name="medical_bio_hint">Medical Bio</string>
+    <string name="login_button">Login</string>
+    <string name="user_type_switch">User Type:</string>
+    <string name="forgot_password_button">Forgot Password?</string>
+    <string name="register_button">Register</string>
+    <string name="post_symptoms_button">Post Symptoms</string>
+    <string name="recommend_button">Recommend</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="doctor_label">Doctor</string>
+    <string name="patient_label">Patient</string>
+    <string name="title_activity_patient_profile">PatientProfileActivity</string>
+    <string name="title_activity_doctor_profile">DoctorProfileActivity</string>
+    <string name="title_activity_all_symptoms">AllSymptomsActivity</string>
+
+</resources>

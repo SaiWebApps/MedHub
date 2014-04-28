@@ -5,6 +5,7 @@ import java.util.Map;
 
 import edu.cmu.medhub.R;
 import entry.fragments.LoginFragment;
+import entry.fragments.RegistrationFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -88,11 +89,6 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 		initializeTabAdapter(); //Register fragments with adapter.
 		initializeViewPager(); //Master, coordinates interactions between ActionBar and Adapter
 		initializeActionBar(); //Displays tabs, tells view pager which tab was selected
-		
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new LoginFragment()).commit();
-		}
 	}
 
 	@Override

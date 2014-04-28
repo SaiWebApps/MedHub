@@ -53,12 +53,15 @@ public class DatabaseManager {
 	
 	/**
 	 * Used for user login.
-	 * @param u - User whose credentials are being verified
+	 * @param email - Email address of target User
+	 * @param password - Password entered by user in login interface
 	 * @return true if the entered password is equal to the actual password
 	 */
-	public boolean authenticate(User u) {
-		User actual = userTable.getUser(database, u.getEmail());
-		return actual.getPassword().equals(u.getPassword());
+	public boolean authenticate(String email, String enteredPassword) {
+		open();
+		User actual = userTable.getUser(database, email);
+		close();
+		return actual.getPassword().equals(enteredPassword);
 	}
 
 	/**

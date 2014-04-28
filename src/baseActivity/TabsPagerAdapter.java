@@ -2,8 +2,6 @@ package baseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import entry.fragments.RegistrationFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,8 +31,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return tabList.get(index);
 		} catch(ArrayIndexOutOfBoundsException e) {
 			return null;
-		} catch(NullPointerException e) {
-			return new RegistrationFragment();
 		}
 	}
 

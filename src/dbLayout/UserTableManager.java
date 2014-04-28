@@ -63,7 +63,7 @@ public class UserTableManager extends EntityTableManager<User> {
 
 		try {
 			u = new User();
-			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE email=" + email, null);
+			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE email=\"" + email + "\"", null);
 			c.moveToFirst();
 			u.setUserId(c.getInt(c.getColumnIndexOrThrow("userId")));
 			u.setEmail(email);
@@ -106,7 +106,6 @@ public class UserTableManager extends EntityTableManager<User> {
 		}
 		u.setUserId(newId);
 		Log.v("User Creation", "User has been successfully created.");
-		Log.v("User email", getUser(db, u.getEmail()).getEmail());
 		return true;
 	}
 

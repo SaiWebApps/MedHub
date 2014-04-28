@@ -1027,7 +1027,6 @@ containing a value of this type.
         public static final int expanded_menu=0x7f05002c;
         public static final int firstName=0x7f05004f;
         public static final int first_name=0x7f05003f;
-        public static final int forgotPasswordButton=0x7f050046;
         public static final int headerBlock=0x7f050049;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
@@ -1039,9 +1038,10 @@ containing a value of this type.
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
         public static final int loginButton=0x7f050047;
-        public static final int loginEmail=0x7f050044;
+        public static final int loginEmail=0x7f050045;
+        public static final int loginErrors=0x7f050044;
         public static final int loginMessage=0x7f050043;
-        public static final int loginPassword=0x7f050045;
+        public static final int loginPassword=0x7f050046;
         public static final int medical_bio=0x7f050042;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
@@ -1134,15 +1134,14 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int doctor_doctor_profile=0x7f030017;
         public static final int entry_main=0x7f030018;
-        public static final int entry_register=0x7f030019;
-        public static final int fragment_all_symptoms=0x7f03001a;
-        public static final int fragment_doctor_profile=0x7f03001b;
-        public static final int fragment_login=0x7f03001c;
-        public static final int fragment_patient_profile=0x7f03001d;
-        public static final int fragment_register=0x7f03001e;
-        public static final int patient_all_symptoms=0x7f03001f;
-        public static final int patient_patient_profile=0x7f030020;
-        public static final int support_simple_spinner_dropdown_item=0x7f030021;
+        public static final int fragment_all_symptoms=0x7f030019;
+        public static final int fragment_doctor_profile=0x7f03001a;
+        public static final int fragment_login=0x7f03001b;
+        public static final int fragment_patient_profile=0x7f03001c;
+        public static final int fragment_register=0x7f03001d;
+        public static final int patient_all_symptoms=0x7f03001e;
+        public static final int patient_patient_profile=0x7f03001f;
+        public static final int support_simple_spinner_dropdown_item=0x7f030020;
     }
     public static final class menu {
         public static final int all_symptoms=0x7f0c0000;

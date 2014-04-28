@@ -1,7 +1,6 @@
 package entry.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
+import baseHandler.ActivityHandler;
 import dbLayout.DatabaseManager;
 import edu.cmu.medhub.R;
 import entity.User;
@@ -10,7 +9,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class RegistrationHandler {
+public class RegistrationHandler extends ActivityHandler {
 	//EditText
 	private EditText regEmailView;
 	private EditText regPasswordView;
@@ -28,14 +27,10 @@ public class RegistrationHandler {
 
 	//Handle interactions with database.
 	private DatabaseManager dbm;
-	
-	//Validation errors
-	private List<String> errorMessages;
 
 	public RegistrationHandler(Activity activity) {
 		try {
 			this.dbm = new DatabaseManager(activity.getApplicationContext());
-			this.errorMessages = new ArrayList<String>();
 
 			this.regEmailView = (EditText) activity.findViewById(R.id.regEmail);
 			this.regEmail = regEmailView.getText().toString().trim();
@@ -58,6 +53,7 @@ public class RegistrationHandler {
 		}
 	}
 
+	@Override
 	public boolean validateFields() {
 		if (regEmail.isEmpty()) {
 			Log.v("Validating Registration Fields", "Invalid email");
@@ -82,7 +78,8 @@ public class RegistrationHandler {
 		return errorMessages.isEmpty();
 	}
 
-	private void clearFields() {
+	@Override
+	public void clearFields() {
 		firstNameView.setText("");
 		lastNameView.setText("");
 		regEmailView.setText("");
@@ -91,18 +88,10 @@ public class RegistrationHandler {
 		regErrorMessageView.setText("");
 	}
 	
-	public void displayErrorMessages() {
-		String errorList = "";
-		for (String error : errorMessages) {
-			errorList += error + "\n";
-		}
-		regErrorMessageView.setText(errorList.trim());
-	}
-	
 	public void register() {
 		if (!validateFields()) {
 			Log.v("Logging", "Validation error");
-			displayErrorMessages();
+			displayErrorMessages(regErrorMessageView);
 			return;
 		}
 		

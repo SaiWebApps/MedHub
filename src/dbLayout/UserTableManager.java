@@ -8,7 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class UserTableManager extends EntityTableManager<User> {
-
+	public enum UserCreationError {
+		ALREADY_EXISTS(-2), UNABLE_TO_CREATE(-1);
+		int code;
+		
+		private UserCreationError(int code) { this.code = code; }
+		public int getCode() { return code; }
+	}
+		
 	public UserTableManager(String tableName) {
 		super(tableName);
 	}
@@ -83,11 +90,11 @@ public class UserTableManager extends EntityTableManager<User> {
 	}
 
 	@Override
-	public boolean create(SQLiteDatabase db, User u) {
+	public long create(SQLiteDatabase db, User u) {
 		//Do not create user if she already exists.
 		if (getUser(db, u.getEmail()) != null) {
 			Log.v("User Creation", "User already exists.");
-			return false;
+			return UserCreationError.ALREADY_EXISTS.getCode();
 		}
 		
 		//Otherwise, create user.
@@ -102,11 +109,11 @@ public class UserTableManager extends EntityTableManager<User> {
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {
 			Log.v("User Creation", "Unable to create user.");
-			return false;
+			return UserCreationError.UNABLE_TO_CREATE.getCode();
 		}
 		u.setUserId(newId);
 		Log.v("User Creation", "User has been successfully created.");
-		return true;
+		return newId;
 	}
 
 	@Override

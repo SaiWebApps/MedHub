@@ -4,7 +4,7 @@
     <string name="app_name">MedHub</string>
     <string name="login_message">MedHub - Login</string>
     <string name="all_symptoms_message">All Symptoms</string>
-    <string name="sign_up_message">Sign Up</string>
+    <string name="sign_up_message">MedHub - Sign Up</string>
     <string name="patient_profile_message">Patient Profile</string>
     <string name="doctor_profile_message">Doctor Profile</string>
     <string name="shared_with_message">Shared With:</string>

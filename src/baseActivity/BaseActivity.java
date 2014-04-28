@@ -2,10 +2,7 @@ package baseActivity;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import edu.cmu.medhub.R;
-import entry.fragments.LoginFragment;
-import entry.fragments.RegistrationFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -84,7 +81,6 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry_main);
-		
 		initializeTabMap(); //Map tab names to corresponding fragments.
 		initializeTabAdapter(); //Register fragments with adapter.
 		initializeViewPager(); //Master, coordinates interactions between ActionBar and Adapter
@@ -120,7 +116,7 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 
 	@Override
 	public void onTabUnselected(android.app.ActionBar.Tab tab,
-			android.app.FragmentTransaction ft) { 
+			android.app.FragmentTransaction ft) {
 	}
 
 	@Override

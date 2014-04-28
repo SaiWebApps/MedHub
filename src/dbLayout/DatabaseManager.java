@@ -47,8 +47,8 @@ public class DatabaseManager {
 	 * Register a new user.
 	 * @param u - User to be registered
 	 */
-	public void registerUser(User u) {
-		userTable.create(database, u);
+	public long registerUser(User u) {
+		return userTable.create(database, u);
 	}
 	
 	/**

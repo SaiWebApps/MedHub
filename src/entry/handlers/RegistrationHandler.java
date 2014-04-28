@@ -2,9 +2,11 @@ package entry.handlers;
 
 import baseHandler.ActivityHandler;
 import dbLayout.DatabaseManager;
+import dbLayout.UserTableManager.UserCreationError;
 import edu.cmu.medhub.R;
 import entity.User;
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +18,7 @@ public class RegistrationHandler extends ActivityHandler {
 	private EditText confirmPasswordView;
 	private EditText firstNameView;
 	private EditText lastNameView;
-	private TextView regErrorMessageView;
+	private TextView regMessageView;
 	
 	//String values of Views
 	private String regEmail;
@@ -47,7 +49,7 @@ public class RegistrationHandler extends ActivityHandler {
 			this.lastNameView = (EditText) activity.findViewById(R.id.lastName);
 			this.lastName = lastNameView.getText().toString().trim();
 			
-			this.regErrorMessageView = (TextView) activity.findViewById(R.id.regErrorMessages);
+			this.regMessageView = (TextView) activity.findViewById(R.id.regErrorMessages);
 		} catch (NullPointerException e) {
 			Log.e("Reg Init Error", "We are not on the registration page.");
 		}
@@ -85,17 +87,17 @@ public class RegistrationHandler extends ActivityHandler {
 		regEmailView.setText("");
 		regPasswordView.setText("");
 		confirmPasswordView.setText("");
-		regErrorMessageView.setText("");
+		regMessageView.setText("");
 	}
 	
 	public void register() {
 		if (!validateFields()) {
 			Log.v("Logging", "Validation error");
-			displayErrorMessages(regErrorMessageView);
+			displayErrorMessages(regMessageView);
 			return;
 		}
 		
-		Log.v("Logging", "Inside register method of RH");
+		Log.v("Logging", "Inside register method of Registration Handler");
 		dbm.open();
 		User u = new User();
 		u.setEmail(regEmail);
@@ -104,9 +106,12 @@ public class RegistrationHandler extends ActivityHandler {
 		u.setPassword(regPassword);
 		u.setType(0);
 		u.setScore(0);
-		dbm.registerUser(u);
+		if (dbm.registerUser(u) == UserCreationError.ALREADY_EXISTS.getCode()) {
+			Log.v("Registration Status", "Unsuccessful - User already exists");
+			regMessageView.setText("A user already exists for the given email.");
+		}
+		Log.v("Registration Status", "User successfully registered");
 		dbm.close();
-		clearFields();
-		Log.v("Registration Status", "Successful");
+		clearFields();		
 	}
 }

@@ -249,7 +249,7 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_settings 0x7f050056
+int id action_settings 0x7f050057
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -260,8 +260,8 @@ int id container 0x7f05003c
 int id default_activity_button 0x7f050028
 int id dialog 0x7f05000e
 int id disableHome 0x7f050008
-int id doctor 0x7f050054
 int id doctorRecommendations 0x7f05004c
+int id doctorType 0x7f050055
 int id dropdown 0x7f05000f
 int id edit_query 0x7f050030
 int id email 0x7f050041
@@ -291,8 +291,8 @@ int id never 0x7f050009
 int id none 0x7f050010
 int id normal 0x7f050000
 int id pager 0x7f05003d
-int id patient 0x7f050055
 int id patientProfileMessage 0x7f050048
+int id patientType 0x7f050056
 int id postSymptomsButton 0x7f05004b
 int id postedSymptoms 0x7f05004d
 int id posted_messages 0x7f05003e
@@ -324,6 +324,7 @@ int id title 0x7f05002b
 int id top_action_bar 0x7f050020
 int id up 0x7f050021
 int id useLogo 0x7f050003
+int id userType 0x7f050054
 int id withText 0x7f05000c
 int integer abc_max_action_buttons 0x7f090000
 int layout abc_action_bar_decor 0x7f030000

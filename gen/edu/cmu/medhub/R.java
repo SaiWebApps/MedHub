@@ -1006,7 +1006,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050056;
+        public static final int action_settings=0x7f050057;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
@@ -1017,8 +1017,8 @@ containing a value of this type.
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
-        public static final int doctor=0x7f050054;
         public static final int doctorRecommendations=0x7f05004c;
+        public static final int doctorType=0x7f050055;
         public static final int dropdown=0x7f05000f;
         public static final int edit_query=0x7f050030;
         public static final int email=0x7f050041;
@@ -1048,8 +1048,8 @@ containing a value of this type.
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
         public static final int pager=0x7f05003d;
-        public static final int patient=0x7f050055;
         public static final int patientProfileMessage=0x7f050048;
+        public static final int patientType=0x7f050056;
         public static final int postSymptomsButton=0x7f05004b;
         public static final int postedSymptoms=0x7f05004d;
         public static final int posted_messages=0x7f05003e;
@@ -1081,6 +1081,7 @@ containing a value of this type.
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
+        public static final int userType=0x7f050054;
         public static final int withText=0x7f05000c;
     }
     public static final class integer {

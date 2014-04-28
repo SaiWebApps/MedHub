@@ -20,8 +20,8 @@
         android:id="@+id/regErrorMessages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/red" />
+        android:textColor="@color/red"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/firstName"
@@ -57,17 +57,23 @@
         android:hint="@string/confirm_password_hint"
         android:inputType="textPassword" />
 
-    <RadioButton
-        android:id="@+id/doctor"
+    <RadioGroup
+        android:id="@+id/userType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/doctor_label" />
+        android:layout_height="wrap_content" >
 
-    <RadioButton
-        android:id="@+id/patient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/patient_label" />
+        <RadioButton
+            android:id="@+id/doctorType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/doctor_label" />
+
+        <RadioButton
+            android:id="@+id/patientType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patient_label" />
+    </RadioGroup>
 
     <Button
         android:layout_width="fill_parent"

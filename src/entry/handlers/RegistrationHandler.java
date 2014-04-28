@@ -6,9 +6,9 @@ import dbLayout.UserTableManager.UserCreationError;
 import edu.cmu.medhub.R;
 import entity.User;
 import android.app.Activity;
-import android.graphics.Color;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class RegistrationHandler extends ActivityHandler {
@@ -19,13 +19,15 @@ public class RegistrationHandler extends ActivityHandler {
 	private EditText firstNameView;
 	private EditText lastNameView;
 	private TextView regMessageView;
-	
+	private RadioGroup radioGroup;
+
 	//String values of Views
 	private String regEmail;
 	private String regPassword;
 	private String confirmPassword;
 	private String firstName;
 	private String lastName;
+	private int userType; //0 = doctor, 1 = patient
 
 	//Handle interactions with database.
 	private DatabaseManager dbm;
@@ -42,14 +44,17 @@ public class RegistrationHandler extends ActivityHandler {
 
 			this.confirmPasswordView = (EditText) activity.findViewById(R.id.confirmPassword);
 			this.confirmPassword = confirmPasswordView.getText().toString().trim();
-			
+
 			this.firstNameView = (EditText) activity.findViewById(R.id.firstName);
 			this.firstName = firstNameView.getText().toString().trim();
-					
+
 			this.lastNameView = (EditText) activity.findViewById(R.id.lastName);
 			this.lastName = lastNameView.getText().toString().trim();
-			
+
 			this.regMessageView = (TextView) activity.findViewById(R.id.regErrorMessages);
+
+			this.radioGroup = (RadioGroup) activity.findViewById(R.id.userType);
+			this.userType = radioGroup.getCheckedRadioButtonId();
 		} catch (NullPointerException e) {
 			Log.e("Reg Init Error", "We are not on the registration page.");
 		}
@@ -88,30 +93,43 @@ public class RegistrationHandler extends ActivityHandler {
 		regPasswordView.setText("");
 		confirmPasswordView.setText("");
 		regMessageView.setText("");
+		radioGroup.clearCheck();
 	}
-	
+
+	private User readInputs() {
+		User u = new User();
+		u.setEmail(regEmail);
+		u.setFirstName(firstName);
+		u.setLastName(lastName);
+		u.setPassword(regPassword);
+		switch (userType) {
+		case R.id.doctorType:
+			u.setType(0);
+			break;
+		case R.id.patientType:
+			u.setType(1);
+			break;
+		}
+		u.setScore(0);
+		return u;
+	}
+
 	public void register() {
 		if (!validateFields()) {
 			Log.v("Logging", "Validation error");
 			displayErrorMessages(regMessageView);
 			return;
 		}
-		
+
 		Log.v("Logging", "Inside register method of Registration Handler");
 		dbm.open();
-		User u = new User();
-		u.setEmail(regEmail);
-		u.setFirstName(firstName);
-		u.setLastName(lastName);
-		u.setPassword(regPassword);
-		u.setType(0);
-		u.setScore(0);
+		User u = readInputs();
 		if (dbm.registerUser(u) == UserCreationError.ALREADY_EXISTS.getCode()) {
 			Log.v("Registration Status", "Unsuccessful - User already exists");
 			regMessageView.setText("A user already exists for the given email.");
 		}
 		Log.v("Registration Status", "User successfully registered");
 		dbm.close();
-		clearFields();		
+		clearFields();
 	}
 }

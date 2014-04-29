@@ -35,7 +35,7 @@ public class LoginHandler extends ActivityHandler {
 			Log.v("Login validation", "Blank email");
 			errorMessages.add("Invalid login email");
 		}
-		if (loginPassword.isEmpty() || dbm.authenticate(loginEmail, loginPassword)) {
+		if (loginPassword.isEmpty() || !dbm.authenticate(loginEmail, loginPassword)) {
 			Log.v("Login validation", "Blank or incorrect password");
 			errorMessages.add("Invalid password");
 		}

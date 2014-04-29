@@ -8,14 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class UserTableManager extends EntityTableManager<User> {
-	public enum UserCreationError {
-		ALREADY_EXISTS(-2), UNABLE_TO_CREATE(-1);
-		int code;
-		
-		private UserCreationError(int code) { this.code = code; }
-		public int getCode() { return code; }
-	}
-		
+	
 	public UserTableManager(String tableName) {
 		super(tableName);
 	}
@@ -33,6 +26,7 @@ public class UserTableManager extends EntityTableManager<User> {
 
 		try {
 			db.execSQL(buf.toString());
+			Log.v("Table Creation", "Created User table successfully.");
 		} catch(SQLException e) {
 			Log.e("Table Creation", "Unable to create Users table.");
 			Log.e("Table Creation Query", buf.toString());
@@ -91,10 +85,10 @@ public class UserTableManager extends EntityTableManager<User> {
 
 	@Override
 	public long create(SQLiteDatabase db, User u) {
-		//Do not create user if she already exists.
+		//Do not create user if he/she already exists.
 		if (getUser(db, u.getEmail()) != null) {
 			Log.v("User Creation", "User already exists.");
-			return UserCreationError.ALREADY_EXISTS.getCode();
+			return CreationError.ALREADY_EXISTS.getCode();
 		}
 		
 		//Otherwise, create user.
@@ -109,7 +103,7 @@ public class UserTableManager extends EntityTableManager<User> {
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {
 			Log.v("User Creation", "Unable to create user.");
-			return UserCreationError.UNABLE_TO_CREATE.getCode();
+			return CreationError.UNABLE_TO_CREATE.getCode();
 		}
 		u.setUserId(newId);
 		Log.v("User Creation", "User has been successfully created.");
@@ -118,6 +112,6 @@ public class UserTableManager extends EntityTableManager<User> {
 
 	@Override
 	public boolean delete(SQLiteDatabase db, User u) {
-		return false;
+		return (db.delete(getTableName(), "userId=" + u.getUserId(), null) == 1);
 	}
 }

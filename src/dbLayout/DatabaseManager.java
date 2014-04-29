@@ -1,5 +1,7 @@
 package dbLayout;
 
+import entity.Doctor;
+import entity.Patient;
 import entity.User;
 import android.content.Context;
 import android.database.sqlite.*;
@@ -17,7 +19,9 @@ public class DatabaseManager {
 
 	//Table Managers
 	private UserTableManager userTable = new UserTableManager("User");
-
+	private PatientTableManager patientTable = new PatientTableManager("Patient");
+	private DoctorTableManager doctorTable = new DoctorTableManager("Doctor");
+	
 	/**
 	 * Initializes this database manager with the given context.
 	 * @param context - Interface to global info about an application environment
@@ -42,13 +46,31 @@ public class DatabaseManager {
 			database.close();
 		}
 	}
-
+	
 	/**
-	 * Register a new user.
+	 * Register a new user. Also, register the user as a Patient or a Doctor,
+	 * depending on user type selected.
 	 * @param u - User to be registered
 	 */
 	public long registerUser(User u) {
-		return userTable.create(database, u);
+		long id = userTable.create(database, u);
+		if (id < 0) {
+			return id;
+		}
+		
+		switch(u.getType()) {
+		case 0:
+			Doctor d = new Doctor();
+			d.setUserId(u.getUserId());
+			doctorTable.create(database, d);
+			break;
+		case 1:
+			Patient p = new Patient();
+			p.setUserId(u.getUserId());
+			patientTable.create(database, p);
+			break;
+		}
+		return id;
 	}
 	
 	/**
@@ -78,11 +100,15 @@ public class DatabaseManager {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			userTable.createTable(db);
+			patientTable.createTable(db);
+			doctorTable.createTable(db);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			userTable.deleteTable(db);
+			patientTable.deleteTable(db);
+			doctorTable.deleteTable(db);
 			db.setVersion(newVersion); //Update version
 			onCreate(db);
 		}

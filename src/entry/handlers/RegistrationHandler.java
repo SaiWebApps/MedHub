@@ -2,7 +2,6 @@ package entry.handlers;
 
 import baseHandler.ActivityHandler;
 import dbLayout.DatabaseManager;
-import dbLayout.UserTableManager.UserCreationError;
 import edu.cmu.medhub.R;
 import entity.User;
 import android.app.Activity;
@@ -124,11 +123,13 @@ public class RegistrationHandler extends ActivityHandler {
 		Log.v("Logging", "Inside register method of Registration Handler");
 		dbm.open();
 		User u = readInputs();
-		if (dbm.registerUser(u) == UserCreationError.ALREADY_EXISTS.getCode()) {
+		if (dbm.registerUser(u) < 0) {
 			Log.v("Registration Status", "Unsuccessful - User already exists");
 			regMessageView.setText("A user already exists for the given email.");
 		}
-		Log.v("Registration Status", "User successfully registered");
+		else {
+			Log.v("Registration Status", "User successfully registered");
+		}
 		dbm.close();
 		clearFields();
 	}

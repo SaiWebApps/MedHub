@@ -1,13 +1,24 @@
 package entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Doctor object, contains information specific to a doctor.
  * @author Sairam Krishnan (sbkrishn) and Meghna Thakur (mthakur)
  */
-public class Doctor {
+public class Doctor implements Parcelable {
 	private long doctorId;
 	private long userId;
 	private String credentials;
+	
+	public Doctor() {}
+	
+	public Doctor(Parcel in) {
+		doctorId = in.readLong();
+		userId = in.readLong();
+		credentials = in.readString();
+	}
 	
 	/**
 	 * @return the doctor id
@@ -39,4 +50,25 @@ public class Doctor {
 	 * @param credentials - Doctor's credentials
 	 */
 	public void setCredentials(String credentials) { this.credentials = credentials; }
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(doctorId);
+		dest.writeLong(userId);
+		dest.writeString(credentials);
+	}
+	
+	public static final Parcelable.Creator<Doctor> CREATOR = new Parcelable.Creator<Doctor>() {
+		public Doctor createFromParcel(Parcel in) {
+			return new Doctor(in);
+		}
+
+		public Doctor[] newArray(int size) {
+			return new Doctor[size];
+		}
+	};
 }

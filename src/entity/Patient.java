@@ -1,13 +1,24 @@
 package entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Patient object, contains info specific to a patient/non-doctor user.
  * @author Sairam Krishnan (sbkrishn) and Meghna Thakur (mthakur)
  */
-public class Patient {
+public class Patient implements Parcelable {
 	private long patientId;
 	private long userId;
 	private String medicalBio;
+	
+	public Patient() {}
+	
+	public Patient(Parcel in) {
+		patientId = in.readLong();
+		userId = in.readLong();
+		medicalBio = in.readString();
+	}
 	
 	/**
 	 * @return the patient id
@@ -39,4 +50,26 @@ public class Patient {
 	 * @param medicalBio - Patient's medicalBio
 	 */
 	public void setMedicalBio(String medicalBio) { this.medicalBio = medicalBio; }
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(patientId);
+		dest.writeLong(userId);
+		dest.writeString(medicalBio);
+	}
+	
+	public static final Parcelable.Creator<Patient> CREATOR = new Parcelable.Creator<Patient>() {
+		public Patient createFromParcel(Parcel in) {
+			return new Patient(in);
+		}
+
+		public Patient[] newArray(int size) {
+			return new Patient[size];
+		}
+	};
 }

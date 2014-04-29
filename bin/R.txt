@@ -358,8 +358,8 @@ int layout fragment_login 0x7f03001b
 int layout fragment_patient_profile 0x7f03001c
 int layout fragment_register 0x7f03001d
 int layout patient_all_symptoms 0x7f03001e
-int layout patient_patient_profile 0x7f03001f
-int layout support_simple_spinner_dropdown_item 0x7f030020
+int layout support_simple_spinner_dropdown_item 0x7f03001f
+int layout user_profile 0x7f030020
 int menu all_symptoms 0x7f0c0000
 int menu doctor_profile 0x7f0c0001
 int menu main 0x7f0c0002

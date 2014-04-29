@@ -42,7 +42,6 @@ public class LoginHandler extends ActivityHandler {
 		return errorMessages.isEmpty();
 	}
 	
-	@Override
 	public void clearFields() {
 		loginEmailView.setText("");
 		loginPasswordView.setText("");

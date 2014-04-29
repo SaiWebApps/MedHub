@@ -21,6 +21,7 @@ public class DatabaseManager {
 	private UserTableManager userTable = new UserTableManager("User");
 	private PatientTableManager patientTable = new PatientTableManager("Patient");
 	private DoctorTableManager doctorTable = new DoctorTableManager("Doctor");
+	//private PostTableManager postTable = new PostTableManager("Post");
 	
 	/**
 	 * Initializes this database manager with the given context.
@@ -86,6 +87,14 @@ public class DatabaseManager {
 		return actual.getPassword().equals(enteredPassword);
 	}
 
+	public Patient getPatient(User user) {
+		return patientTable.getPatient(database, user.getUserId());
+	}
+	
+	public Doctor getDoctor(User user) {
+		return doctorTable.getDoctor(database, user.getUserId());
+	}
+	
 	/**
 	 * Inner class that creates/upgrades and opens a connection to a database.
 	 * @author Sairam Krishnan

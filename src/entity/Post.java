@@ -1,15 +1,28 @@
 package entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Post object, represents a user post/message.
  * @author Sairam Krishnan (sbkrishn)
  */
-public class Post {
+public class Post implements Parcelable {
 	private long postId;
 	private long userId;
 	private String timestamp;
 	private String postText;
 	private int numViews;
+	
+	public Post() {}
+	
+	public Post(Parcel in) {
+		postId = in.readLong();
+		userId = in.readLong();
+		timestamp = in.readString();
+		postText = in.readString();
+		numViews = in.readInt();
+	}
 	
 	/**
 	 * @return the id of the post
@@ -57,4 +70,28 @@ public class Post {
 	 * @param numViews - Number of views received by this post so far
 	 */
 	public void setNumViews(int numViews) { this.numViews = numViews; }
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(postId);
+		dest.writeLong(userId);		
+		dest.writeString(timestamp);
+		dest.writeString(postText);
+		dest.writeInt(numViews);
+	}
+	
+	public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+		public Post createFromParcel(Parcel in) {
+			return new Post(in);
+		}
+
+		public Post[] newArray(int size) {
+			return new Post[size];
+		}
+	};
 }

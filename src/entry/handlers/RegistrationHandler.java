@@ -5,6 +5,7 @@ import dbLayout.DatabaseManager;
 import edu.cmu.medhub.R;
 import entity.User;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -84,17 +85,6 @@ public class RegistrationHandler extends ActivityHandler {
 		return errorMessages.isEmpty();
 	}
 
-	@Override
-	public void clearFields() {
-		firstNameView.setText("");
-		lastNameView.setText("");
-		regEmailView.setText("");
-		regPasswordView.setText("");
-		confirmPasswordView.setText("");
-		regMessageView.setText("");
-		radioGroup.clearCheck();
-	}
-
 	private User readInputs() {
 		User u = new User();
 		u.setEmail(regEmail);
@@ -113,7 +103,19 @@ public class RegistrationHandler extends ActivityHandler {
 		return u;
 	}
 
-	public void register() {
+	private void setupContext(User u) {
+		contextInfo.put("user", u);
+		switch (u.getType()) {
+		case 0:
+			contextInfo.put("doctor", dbm.getDoctor(u));
+			break;
+		case 1:
+			contextInfo.put("patient", dbm.getPatient(u));
+			break;
+		}
+	}
+	
+	public void register(Context current, Class next) {
 		if (!validateFields()) {
 			Log.v("Logging", "Validation error");
 			displayErrorMessages(regMessageView);
@@ -126,11 +128,12 @@ public class RegistrationHandler extends ActivityHandler {
 		if (dbm.registerUser(u) < 0) {
 			Log.v("Registration Status", "Unsuccessful - User already exists");
 			regMessageView.setText("A user already exists for the given email.");
+			dbm.close();
+			return;
 		}
-		else {
-			Log.v("Registration Status", "User successfully registered");
-		}
+		Log.v("Registration Status", "User successfully registered");		
+		setupContext(u);
 		dbm.close();
-		clearFields();
+		nextActivity(current, next);
 	}
 }

@@ -1,9 +1,11 @@
-package baseHandler;
+package baseActivity.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import baseActivity.BaseActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -37,7 +39,7 @@ public abstract class ActivityHandler {
 	 * @param current - Context of Activity currently being displayed
 	 * @param next - Class of next Activity to display
 	 */
-	public void nextActivity(Context current, Class next) {
+	public void nextActivity(Context current, Class<? extends BaseActivity> next) {
 		Intent moveToProfile = new Intent(current, next);
 		for (String key : contextInfo.keySet()) {
 			moveToProfile.putExtra(key, contextInfo.get(key));

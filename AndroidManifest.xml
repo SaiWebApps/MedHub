@@ -22,7 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="userProfile.ProfileActivity"
+            android:name="doctorProfile.DoctorProfileActivity"
+            android:label="@string/app_name">
+        </activity>
+         <activity
+            android:name="patientProfile.PatientProfileActivity"
             android:label="@string/app_name">
         </activity>
     </application>

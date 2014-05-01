@@ -87,6 +87,10 @@ public class DatabaseManager {
 		return actual.getPassword().equals(enteredPassword);
 	}
 
+	public User getUser(String email) {
+		return userTable.getUser(database, email);
+	}
+	
 	public Patient getPatient(User user) {
 		return patientTable.getPatient(database, user.getUserId());
 	}

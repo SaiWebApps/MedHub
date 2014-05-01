@@ -1,6 +1,6 @@
 package entry;
 
-import userProfile.ProfileActivity;
+import doctorProfile.DoctorProfileActivity;
 import android.view.View;
 import baseActivity.BaseActivity;
 import entry.fragments.LoginFragment;
@@ -27,10 +27,10 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	public void register(View v) {
-		new RegistrationHandler(this).register(MainActivity.this, ProfileActivity.class);
+		new RegistrationHandler(this).register(MainActivity.this);
 	}
 	
 	public void login(View v) {
-		new LoginHandler(this).login();
+		new LoginHandler(this).login(MainActivity.this);
 	}
 }

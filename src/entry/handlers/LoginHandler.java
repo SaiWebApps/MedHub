@@ -1,9 +1,14 @@
 package entry.handlers;
 
-import baseHandler.ActivityHandler;
+import patientProfile.PatientProfileActivity;
+import baseActivity.handler.ActivityHandler;
 import dbLayout.DatabaseManager;
+import doctorProfile.DoctorProfileActivity;
 import edu.cmu.medhub.R;
+import entity.User;
+import entity.UserType;
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,19 +47,33 @@ public class LoginHandler extends ActivityHandler {
 		return errorMessages.isEmpty();
 	}
 	
-	public void clearFields() {
-		loginEmailView.setText("");
-		loginPasswordView.setText("");
-		loginErrorMessageView.setText("");
+	private User setupContext() {
+		User u = dbm.getUser(loginEmail);
+		contextInfo.put("user", u);
+		if (u.getType() == UserType.DOCTOR.ordinal()) {
+			contextInfo.put("doctor", dbm.getDoctor(u));
+		}
+		else if (u.getType() == UserType.PATIENT.ordinal()) {
+			contextInfo.put("patient", dbm.getPatient(u));
+		}
+		return u;
 	}
 	
-	public void login() {
+	public void login(Context current) {
 		if (!validateFields()) {
 			Log.e("Login Validation", "Login failed");
 			displayErrorMessages(loginErrorMessageView);
 			return;
 		}
 		Log.v("Login Validation", "Login successful");
-		clearFields();
+		dbm.open();
+		User u = setupContext();
+		dbm.close();
+		if (u.getType() == UserType.DOCTOR.ordinal()) {
+			nextActivity(current, DoctorProfileActivity.class);
+		}
+		else if (u.getType() == UserType.PATIENT.ordinal()) {
+			nextActivity(current, PatientProfileActivity.class);
+		}
 	}
 }

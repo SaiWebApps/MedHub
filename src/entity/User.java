@@ -15,7 +15,7 @@ public class User implements Parcelable {
 	private String lastName;
 	private int type;
 	private int score;
-
+	
 	public User() {}
 	
 	public User(Parcel in) {

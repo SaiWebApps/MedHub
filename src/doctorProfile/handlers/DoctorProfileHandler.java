@@ -1,12 +1,9 @@
-package entry.handlers;
+package doctorProfile.handlers;
 
-import patientProfile.PatientProfileActivity;
 import baseActivity.handler.ActivityHandler;
 import dbLayout.DatabaseManager;
-import doctorProfile.DoctorProfileActivity;
 import edu.cmu.medhub.R;
 import entity.User;
-import entity.UserType;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -14,7 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class RegistrationHandler extends ActivityHandler {
+public class DoctorProfileHandler extends ActivityHandler {
 	//EditText
 	private EditText regEmailView;
 	private EditText regPasswordView;
@@ -35,7 +32,7 @@ public class RegistrationHandler extends ActivityHandler {
 	//Handle interactions with database.
 	private DatabaseManager dbm;
 
-	public RegistrationHandler(Activity activity) {
+	public DoctorProfileHandler(Activity activity) {
 		try {
 			this.dbm = new DatabaseManager(activity.getApplicationContext());
 
@@ -96,10 +93,10 @@ public class RegistrationHandler extends ActivityHandler {
 		u.setPassword(regPassword);
 		switch (userType) {
 		case R.id.doctorType:
-			u.setType(UserType.DOCTOR.ordinal());
+			u.setType(0);
 			break;
 		case R.id.patientType:
-			u.setType(UserType.PATIENT.ordinal());
+			u.setType(1);
 			break;
 		}
 		u.setScore(0);
@@ -108,16 +105,17 @@ public class RegistrationHandler extends ActivityHandler {
 
 	private void setupContext(User u) {
 		contextInfo.put("user", u);
-		if (u.getType() == UserType.DOCTOR.ordinal()) {
+		switch (u.getType()) {
+		case 0:
 			contextInfo.put("doctor", dbm.getDoctor(u));
-		}
-		else if (u.getType() == UserType.PATIENT.ordinal()) {
+			break;
+		case 1:
 			contextInfo.put("patient", dbm.getPatient(u));
+			break;
 		}
-
 	}
-
-	public void register(Context current) {
+	
+	public void register(Context current, Class next) {
 		if (!validateFields()) {
 			Log.v("Logging", "Validation error");
 			displayErrorMessages(regMessageView);
@@ -133,14 +131,9 @@ public class RegistrationHandler extends ActivityHandler {
 			dbm.close();
 			return;
 		}
-		Log.v("Registration Status", "User successfully registered");	
+		Log.v("Registration Status", "User successfully registered");		
 		setupContext(u);
 		dbm.close();
-		if (u.getType() == 0) {
-			nextActivity(current, DoctorProfileActivity.class);
-		}
-		else {
-			nextActivity(current, PatientProfileActivity.class);
-		}
+		nextActivity(current, next);
 	}
 }

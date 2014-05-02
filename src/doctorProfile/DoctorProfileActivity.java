@@ -1,26 +1,16 @@
 package doctorProfile;
 
 import doctorProfile.fragments.DoctorProfileFragment;
-import doctorProfile.handlers.DoctorProfileHandler;
-import android.os.Bundle;
-import android.view.View;
 import baseActivity.BaseActivity;
 import edu.cmu.medhub.R;
-import entity.Doctor;
-import entity.User;
 
-/**
- * Handle user login and registration.
- * @author Sairam Krishnan (sbkrishn)
- */
 public class DoctorProfileActivity extends BaseActivity {
-	private User u;
-	private Doctor d;
-	private DoctorProfileHandler dh;
+	private DoctorProfileFragment dpf;
 
 	@Override
 	public void initializeTabMap() {
-		tabMap.put("Profile", new DoctorProfileFragment());
+		dpf = new DoctorProfileFragment();
+		tabMap.put("Profile", dpf);
 	}
 
 	public int getLayout() {
@@ -29,19 +19,5 @@ public class DoctorProfileActivity extends BaseActivity {
 	
 	public int getPagerId() {
 		return R.id.doctorPager;
-	}
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		u = (User) getIntent().getParcelableExtra("user");		
-		d = (Doctor) getIntent().getParcelableExtra("doctor");
-		dh = new DoctorProfileHandler(this); //Initialize handler.
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		
 	}
 }

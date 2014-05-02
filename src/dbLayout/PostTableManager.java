@@ -1,14 +1,20 @@
 package dbLayout;
 
-import entity.User;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import entity.Post;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class PostTableManager extends EntityTableManager<User> {
-
+public class PostTableManager extends EntityTableManager<Post> {
+	private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	public PostTableManager(String tableName) {
 		super(tableName);
 	}
@@ -19,34 +25,34 @@ public class PostTableManager extends EntityTableManager<User> {
 		buf.append("postId INTEGER PRIMARY KEY AUTOINCREMENT,");
 		buf.append("userId INTEGER NOT NULL,");
 		buf.append("timestamp TEXT NOT NULL,");
+		buf.append("postTitle TEXT NOT NULL,");
 		buf.append("postText TEXT NOT NULL,");
-		buf.append("numViews TEXT NOT NULL)");
+		buf.append("numViews INTEGER NOT NULL)");
 
 		try {
 			db.execSQL(buf.toString());
-			Log.v("Table Creation", "Created User table successfully.");
+			Log.v("Table Creation", "Created Post table successfully.");
 		} catch(SQLException e) {
-			Log.e("Table Creation", "Unable to create Users table.");
+			Log.e("Table Creation", "Unable to create Post table.");
 			Log.e("Table Creation Query", buf.toString());
 		}
 	}
 
-	public User get(SQLiteDatabase db, long userId) {
+	public Post get(SQLiteDatabase db, long postId) {
 		Cursor c = null;
-		User u = null;
+		Post p = null;
 
 		try {
-			u = new User();
-			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE userId=" + userId, null);
+			p = new Post();
+			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE postId=" + postId, null);
 			c.moveToFirst();
-			u.setUserId(userId);
-			u.setEmail(c.getString(c.getColumnIndexOrThrow("email")));
-			u.setPassword(c.getString(c.getColumnIndexOrThrow("password")));
-			u.setFirstName(c.getString(c.getColumnIndexOrThrow("firstName")));
-			u.setLastName(c.getString(c.getColumnIndexOrThrow("lastName")));
-			u.setScore(c.getInt(c.getColumnIndexOrThrow("score")));
-			u.setType(c.getInt(c.getColumnIndexOrThrow("type")));
-			return u;
+			p.setPostId(postId);
+			p.setUserId(c.getLong(c.getColumnIndexOrThrow("userId")));
+			p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
+			p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
+			p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
+			p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
+			return p;
 		} catch (Exception e) {
 			return null;
 		} finally {
@@ -56,22 +62,51 @@ public class PostTableManager extends EntityTableManager<User> {
 		}
 	}
 
-	public User getUser(SQLiteDatabase db, String email) {
+	public List<Post> getPosts(SQLiteDatabase db, long userId) {
 		Cursor c = null;
-		User u = null;
+		List<Post> postList = null;
 
 		try {
-			u = new User();
-			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE email=\"" + email + "\"", null);
-			c.moveToFirst();
-			u.setUserId(c.getInt(c.getColumnIndexOrThrow("userId")));
-			u.setEmail(email);
-			u.setPassword(c.getString(c.getColumnIndexOrThrow("password")));
-			u.setFirstName(c.getString(c.getColumnIndexOrThrow("firstName")));
-			u.setLastName(c.getString(c.getColumnIndexOrThrow("lastName")));
-			u.setScore(c.getInt(c.getColumnIndexOrThrow("score")));
-			u.setType(c.getInt(c.getColumnIndexOrThrow("type")));
-			return u;
+			postList = new ArrayList<Post>();
+			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE userId=" + userId, null);
+			while (c.moveToNext()) {
+				Post p = new Post();
+				p.setUserId(userId);
+				p.setPostId(c.getLong(c.getColumnIndexOrThrow("postId")));
+				p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
+				p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
+				p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
+				p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
+				postList.add(p);
+			}
+			return postList;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (c != null) {
+				c.close();
+			}
+		}
+	}
+	
+	public List<Post> getAllPosts(SQLiteDatabase db) {
+		Cursor c = null;
+		List<Post> postList = null;
+
+		try {
+			postList = new ArrayList<Post>();
+			c = db.rawQuery("SELECT * FROM " + getTableName(), null);
+			while (c.moveToNext()) {
+				Post p = new Post();
+				p.setUserId(c.getLong(c.getColumnIndexOrThrow("userId")));
+				p.setPostId(c.getLong(c.getColumnIndexOrThrow("postId")));
+				p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
+				p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
+				p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
+				p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
+				postList.add(p);
+			}
+			return postList;
 		} catch (Exception e) {
 			return null;
 		} finally {
@@ -82,57 +117,35 @@ public class PostTableManager extends EntityTableManager<User> {
 	}
 
 	@Override
-	public long create(SQLiteDatabase db, User u) {
+	public long create(SQLiteDatabase db, Post p) {
 		//Do not create user if he/she already exists.
-		if (getUser(db, u.getEmail()) != null) {
-			Log.v("User Creation", "User already exists.");
+		if (getPosts(db, p.getUserId()).contains(p)) {
+			Log.v("Post Creation", "Post already exists.");
 			return CreationError.ALREADY_EXISTS.getCode();
 		}
 
 		//Otherwise, create user.
+		String timestamp = df.format(new Date());
 		ContentValues userProperties = new ContentValues();
-		userProperties.put("email", u.getEmail());
-		userProperties.put("password", u.getPassword());
-		userProperties.put("firstName", u.getFirstName());
-		userProperties.put("lastName", u.getLastName());
-		userProperties.put("type", u.getType());
-		userProperties.put("score", u.getScore());
+		userProperties.put("userId", p.getUserId());
+		userProperties.put("postText", p.getPostText());
+		userProperties.put("postTitle", p.getPostTitle());
+		userProperties.put("timestamp", timestamp);
+		userProperties.put("numViews", 1);
 
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {
-			Log.v("User Creation", "Unable to create user.");
+			Log.v("Post Creation", "Unable to create post.");
 			return CreationError.UNABLE_TO_CREATE.getCode();
 		}
-		u.setUserId(newId);
-		Log.v("User Creation", "User has been successfully created.");
+		Log.v("Post Creation", "Post has been successfully created.");
+		p.setTimestamp(timestamp);
+		p.setPostId(newId);
 		return newId;
 	}
 
 	@Override
-	public boolean delete(SQLiteDatabase db, User u) {
-		return (db.delete(getTableName(), "userId=" + u.getUserId(), null) == 1);
-	}
-
-	public void update(SQLiteDatabase db, User u) {
-		String newFn = u.getFirstName();
-		String newLn = u.getLastName();
-		String newPassword = u.getPassword();
-		User orig = get(db, u.getUserId());
-		ContentValues vals = new ContentValues();
-
-		if (orig == null) {
-			return;
-		}
-		if (!orig.getFirstName().equals(newFn)) {
-			vals.put("firstName", newFn);
-		}
-		if (!orig.getLastName().equals(newLn)) {
-			vals.put("lastName", newLn);
-		}
-		if (!orig.getPassword().equals(newPassword)) {
-			vals.put("password", newPassword);
-		}
-
-		db.update(getTableName(), vals, "userId=" + u.getUserId(), null);
+	public boolean delete(SQLiteDatabase db, Post p) {
+		return (db.delete(getTableName(), "postId=" + p.getPostId(), null) == 1);
 	}
 }

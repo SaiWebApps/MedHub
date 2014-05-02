@@ -1,4 +1,4 @@
-package patientProfile.handlers;
+package patientProfile;
 
 import baseActivity.handler.ActivityHandler;
 import dbLayout.DatabaseManager;
@@ -7,9 +7,9 @@ import entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class EditPatientProfileHandler extends ActivityHandler {	
@@ -18,7 +18,8 @@ public class EditPatientProfileHandler extends ActivityHandler {
 	private EditText newLastNameView;
 	private EditText newPasswordView;
 	private EditText confirmPasswordView;
-
+	private TextView errorMessageView;
+	
 	//Views' values
 	private String newFirstName;
 	private String newLastName;
@@ -35,20 +36,23 @@ public class EditPatientProfileHandler extends ActivityHandler {
 		this.newLastNameView = (EditText) a.findViewById(R.id.newLastName);
 		this.newPasswordView = (EditText) a.findViewById(R.id.newPassword);
 		this.confirmPasswordView = (EditText) a.findViewById(R.id.confirmNewPassword);
+		this.errorMessageView = (TextView) a.findViewById(R.id.editProfileErrors);
 		
 		//Read values from views.
 		this.newFirstName = newFirstNameView.getText().toString().trim();
 		this.newLastName = newLastNameView.getText().toString().trim();
 		this.newPassword = newPasswordView.getText().toString().trim();
-		this.confirmPassword = confirmPasswordView.getText().toString().trim();
-		
-		Log.v("Edit Profile Status", "Registered Views");
+		this.confirmPassword = confirmPasswordView.getText().toString().trim();		
 	}
 	
 	@Override
 	public boolean validateFields() {
 		if (!newPassword.equals(confirmPassword)) {
 			errorMessages.add("Password confirmation does not match new password.");
+		}
+		if (newPassword.isEmpty() && newFirstName.isEmpty() && newLastName.isEmpty() 
+				&& confirmPassword.isEmpty()) {
+			errorMessages.add("Please specify values to modify in your profile.");
 		}
 		return errorMessages.size() == 0;
 	}
@@ -58,31 +62,30 @@ public class EditPatientProfileHandler extends ActivityHandler {
 		newLastNameView.setText("");
 		newPasswordView.setText("");
 		confirmPasswordView.setText("");
+		errorMessageView.setText("");
 	}
 	
-	private User updateUser(Activity a) {
+	private void updateUser(Activity a) {
 		Intent i = a.getIntent();
 		User u = i.getParcelableExtra("user");
+		
 		if (!newFirstName.isEmpty()) {
-			Log.v("Edit Profile Status", "Updating first name to " + newFirstName);
 			u.setFirstName(newFirstName);
 		}
 		if (!newLastName.isEmpty()) {
-			Log.v("Edit Profile Status", "Updating last name to " + newLastName );
 			u.setLastName(newLastName);
 		}
 		if (!newPassword.isEmpty()) {
-			Log.v("Edit Profile Status", "Updating password to " + newPassword);
 			u.setPassword(newPassword);
 		}
 		dbm.updateUser(u);		
 		i.removeExtra("user");
 		i.putExtra("user", u);
-		return u;
 	}
 	
 	public void editProfile(Activity a) {
 		if (!validateFields()) {
+			displayErrorMessages(errorMessageView);
 			return;
 		}
 		

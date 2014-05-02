@@ -9,23 +9,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="patientProfile.fragments.PatientProfileFragment" >
 
-    <TextView
-        android:id="@+id/patientProfileHeading"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawableRight="@drawable/default_user"
-        android:textSize="32sp" />
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/patientEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/bluelight"
-        android:textSize="24sp" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/medicalBio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp" />
+            <TextView
+                android:id="@+id/patientProfileHeading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/default_user"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/medicalBio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/postHistory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
 </LinearLayout>

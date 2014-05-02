@@ -1,7 +1,10 @@
 package dbLayout;
 
+import java.util.List;
+
 import entity.Doctor;
 import entity.Patient;
+import entity.Post;
 import entity.User;
 import android.content.Context;
 import android.database.sqlite.*;
@@ -21,7 +24,7 @@ public class DatabaseManager {
 	private UserTableManager userTable = new UserTableManager("User");
 	private PatientTableManager patientTable = new PatientTableManager("Patient");
 	private DoctorTableManager doctorTable = new DoctorTableManager("Doctor");
-	//private PostTableManager postTable = new PostTableManager("Post");
+	private PostTableManager postTable = new PostTableManager("Post");
 	
 	/**
 	 * Initializes this database manager with the given context.
@@ -103,12 +106,30 @@ public class DatabaseManager {
 		return userTable.getUser(database, email);
 	}
 	
+	public long createPost(Post p) {
+		return postTable.create(database, p);
+	}
+	
 	public Patient getPatient(User user) {
 		return patientTable.getPatient(database, user.getUserId());
 	}
 	
 	public Doctor getDoctor(User user) {
 		return doctorTable.getDoctor(database, user.getUserId());
+	}
+	
+	public List<Post> getPosts(User user) {
+		open();
+		List<Post> posts = postTable.getPosts(database, user.getUserId());
+		close();
+		return posts;
+	}
+	
+	public List<Post> getAllPosts() {
+		open();
+		List<Post> posts = postTable.getAllPosts(database);
+		close();
+		return posts;
 	}
 	
 	/**
@@ -127,6 +148,7 @@ public class DatabaseManager {
 			userTable.createTable(db);
 			patientTable.createTable(db);
 			doctorTable.createTable(db);
+			postTable.createTable(db);
 		}
 
 		@Override
@@ -134,6 +156,7 @@ public class DatabaseManager {
 			userTable.deleteTable(db);
 			patientTable.deleteTable(db);
 			doctorTable.deleteTable(db);
+			postTable.deleteTable(db);
 			db.setVersion(newVersion); //Update version
 			onCreate(db);
 		}

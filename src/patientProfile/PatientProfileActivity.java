@@ -1,8 +1,8 @@
 package patientProfile;
 
+import patientProfile.fragments.CreatePostFragment;
 import patientProfile.fragments.EditPatientProfileFragment;
 import patientProfile.fragments.PatientProfileFragment;
-import patientProfile.handlers.EditPatientProfileHandler;
 import android.view.View;
 import baseActivity.BaseActivity;
 import edu.cmu.medhub.R;
@@ -15,6 +15,7 @@ public class PatientProfileActivity extends BaseActivity {
 		ppf = new PatientProfileFragment();
 		tabMap.put("Profile", ppf);
 		tabMap.put("Edit Profile", new EditPatientProfileFragment());
+		tabMap.put("Create Post", new CreatePostFragment());
 	}
 
 	@Override
@@ -30,5 +31,9 @@ public class PatientProfileActivity extends BaseActivity {
 	public void editProfile(View v) {
 		new EditPatientProfileHandler(this).editProfile(this);
 		ppf.updateProfileInfo();
+	}
+	
+	public void createPost(View v) {
+		new CreatePostHandler(this).createPost();
 	}
 }

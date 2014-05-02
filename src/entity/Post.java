@@ -11,6 +11,7 @@ public class Post implements Parcelable {
 	private long postId;
 	private long userId;
 	private String timestamp;
+	private String postTitle;
 	private String postText;
 	private int numViews;
 	
@@ -20,6 +21,7 @@ public class Post implements Parcelable {
 		postId = in.readLong();
 		userId = in.readLong();
 		timestamp = in.readString();
+		postTitle = in.readString();
 		postText = in.readString();
 		numViews = in.readInt();
 	}
@@ -71,6 +73,10 @@ public class Post implements Parcelable {
 	 */
 	public void setNumViews(int numViews) { this.numViews = numViews; }
 	
+	public String getPostTitle() { return postTitle; }
+	
+	public void setPostTitle(String postTitle) { this.postTitle = postTitle; }
+
 	@Override
 	public int describeContents() {
 		return 0;
@@ -81,6 +87,7 @@ public class Post implements Parcelable {
 		dest.writeLong(postId);
 		dest.writeLong(userId);		
 		dest.writeString(timestamp);
+		dest.writeString(postTitle);
 		dest.writeString(postText);
 		dest.writeInt(numViews);
 	}
@@ -94,4 +101,10 @@ public class Post implements Parcelable {
 			return new Post[size];
 		}
 	};
+
+	@Override
+	public boolean equals(Object obj) {
+		Post p = (Post) obj;
+		return p.userId == userId && p.timestamp == timestamp && p.postText == p.postText;
+	}
 }

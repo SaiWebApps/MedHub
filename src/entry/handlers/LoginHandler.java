@@ -2,6 +2,7 @@ package entry.handlers;
 
 import patientProfile.PatientProfileActivity;
 import baseActivity.handler.ActivityHandler;
+import dbLayout.AuthError;
 import dbLayout.DatabaseManager;
 import doctorProfile.DoctorProfileActivity;
 import edu.cmu.medhub.R;
@@ -18,14 +19,14 @@ public class LoginHandler extends ActivityHandler {
 	private EditText loginEmailView;
 	private EditText loginPasswordView;
 	private TextView loginErrorMessageView;
-	
+
 	//Views' values
 	private String loginEmail;
 	private String loginPassword;
-	
+
 	//Provides way to access database.
 	private DatabaseManager dbm;
-	
+
 	public LoginHandler(Activity activity) {
 		this.dbm = new DatabaseManager(activity.getApplicationContext());
 		this.loginEmailView = (EditText) activity.findViewById(R.id.loginEmail);
@@ -34,19 +35,25 @@ public class LoginHandler extends ActivityHandler {
 		this.loginEmail = loginEmailView.getText().toString().trim();
 		this.loginPassword = loginPasswordView.getText().toString().trim();
 	}
-	
+
 	public boolean validateFields() {
 		if (loginEmail.isEmpty()) {
 			Log.v("Login validation", "Blank email");
 			errorMessages.add("Invalid login email");
 		}
-		if (loginPassword.isEmpty() || !dbm.authenticate(loginEmail, loginPassword)) {
-			Log.v("Login validation", "Blank or incorrect password");
+
+		if (loginPassword.isEmpty() || dbm.authenticate(loginEmail, loginPassword) 
+				== AuthError.INCORRECT.getCode()) {
+			Log.v("Login validation", "Blank password");
 			errorMessages.add("Invalid password");
+		}
+		else if (dbm.authenticate(loginEmail, loginPassword) == AuthError.DOES_NOT_EXIST.getCode()) {
+			Log.v("Login validation", "Nonexistent user");
+			errorMessages.add("No such user exists.");
 		}
 		return errorMessages.isEmpty();
 	}
-	
+
 	private User setupContext() {
 		User u = dbm.getUser(loginEmail);
 		contextInfo.put("user", u);
@@ -58,7 +65,7 @@ public class LoginHandler extends ActivityHandler {
 		}
 		return u;
 	}
-	
+
 	public void login(Context current) {
 		if (!validateFields()) {
 			Log.e("Login Validation", "Login failed");

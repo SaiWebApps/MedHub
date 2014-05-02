@@ -21,6 +21,7 @@ public class User implements Parcelable {
 	public User(Parcel in) {
 		userId = in.readLong();
 		email = in.readString();
+		password = in.readString();
 		firstName = in.readString();
 		lastName = in.readString();
 		type = in.readInt();

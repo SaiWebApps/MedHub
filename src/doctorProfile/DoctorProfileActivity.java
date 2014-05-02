@@ -23,11 +23,17 @@ public class DoctorProfileActivity extends BaseActivity {
 		tabMap.put("Profile", new DoctorProfileFragment());
 	}
 
+	public int getLayout() {
+		return R.layout.doctor_activity;
+	}
+	
+	public int getPagerId() {
+		return R.id.doctorPager;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Retrieve information about the user who has just logged in/registered.
-		//This info will be displayed in the user's profile.
 		u = (User) getIntent().getParcelableExtra("user");		
 		d = (Doctor) getIntent().getParcelableExtra("doctor");
 		dh = new DoctorProfileHandler(this); //Initialize handler.
@@ -36,5 +42,6 @@ public class DoctorProfileActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
 	}
 }

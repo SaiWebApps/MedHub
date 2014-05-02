@@ -28,6 +28,10 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 	 * Initialize the map with the list of tab names and corresponding fragments.
 	 */
 	public abstract void initializeTabMap();
+
+	public abstract int getLayout();
+
+	public abstract int getPagerId();
 	
 	/**
 	 * Creates ActionBar, and populates it with tabs. A TabListener (this class)
@@ -59,7 +63,7 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 	 * will update the action bar after a tab selection.
 	 */
 	private void initializeViewPager() {
-		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager = (ViewPager) findViewById(getPagerId());
 		viewPager.setAdapter(tabManager);
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			
@@ -76,11 +80,11 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 			public void onPageScrollStateChanged(int arg0) {}
 		});
 	}
-	
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.entry_main);
+		setContentView(getLayout());
 		initializeTabMap(); //Map tab names to corresponding fragments.
 		initializeTabAdapter(); //Register fragments with adapter.
 		initializeViewPager(); //Master, coordinates interactions between ActionBar and Adapter
@@ -109,7 +113,7 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 
 	@Override
 	public void onTabSelected(android.app.ActionBar.Tab tab,
-			android.app.FragmentTransaction ft) {
+			android.app.FragmentTransaction ft) {		
 		//Tab listener conveys index of selected tab to viewPager.
 		viewPager.setCurrentItem(tab.getPosition());
 	}

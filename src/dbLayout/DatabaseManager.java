@@ -78,15 +78,27 @@ public class DatabaseManager {
 	 * Used for user login.
 	 * @param email - Email address of target User
 	 * @param password - Password entered by user in login interface
-	 * @return true if the entered password is equal to the actual password
+	 * @return -2 if there is no such user, -1 if the password is incorrect, 0 if correct
 	 */
-	public boolean authenticate(String email, String enteredPassword) {
+	public int authenticate(String email, String enteredPassword) {
 		open();
 		User actual = userTable.getUser(database, email);
 		close();
-		return actual.getPassword().equals(enteredPassword);
+		if (actual == null) {
+			return AuthError.DOES_NOT_EXIST.getCode();
+		}
+		if (!actual.getPassword().equals(enteredPassword)) {
+			return AuthError.INCORRECT.getCode();
+		}
+		return 0;
 	}
 
+	public void updateUser(User u) {
+		open();
+		userTable.update(database, u);
+		close();
+	}
+	
 	public User getUser(String email) {
 		return userTable.getUser(database, email);
 	}

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class UserTableManager extends EntityTableManager<User> {
-	
+
 	public UserTableManager(String tableName) {
 		super(tableName);
 	}
@@ -57,7 +57,7 @@ public class UserTableManager extends EntityTableManager<User> {
 			}
 		}
 	}
-	
+
 	public User getUser(SQLiteDatabase db, String email) {
 		Cursor c = null;
 		User u = null;
@@ -90,7 +90,7 @@ public class UserTableManager extends EntityTableManager<User> {
 			Log.v("User Creation", "User already exists.");
 			return CreationError.ALREADY_EXISTS.getCode();
 		}
-		
+
 		//Otherwise, create user.
 		ContentValues userProperties = new ContentValues();
 		userProperties.put("email", u.getEmail());
@@ -99,7 +99,7 @@ public class UserTableManager extends EntityTableManager<User> {
 		userProperties.put("lastName", u.getLastName());
 		userProperties.put("type", u.getType());
 		userProperties.put("score", u.getScore());
-		
+
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {
 			Log.v("User Creation", "Unable to create user.");
@@ -113,5 +113,28 @@ public class UserTableManager extends EntityTableManager<User> {
 	@Override
 	public boolean delete(SQLiteDatabase db, User u) {
 		return (db.delete(getTableName(), "userId=" + u.getUserId(), null) == 1);
+	}
+
+	public void update(SQLiteDatabase db, User u) {
+		String newFn = u.getFirstName();
+		String newLn = u.getLastName();
+		String newPassword = u.getPassword();
+		User orig = get(db, u.getUserId());
+		ContentValues vals = new ContentValues();
+
+		if (orig == null) {
+			return;
+		}
+		if (!orig.getFirstName().equals(newFn)) {
+			vals.put("firstName", newFn);
+		}
+		if (!orig.getLastName().equals(newLn)) {
+			vals.put("lastName", newLn);
+		}
+		if (!orig.getPassword().equals(newPassword)) {
+			vals.put("password", newPassword);
+		}
+
+		db.update(getTableName(), vals, "userId=" + u.getUserId(), null);
 	}
 }

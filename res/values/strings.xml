@@ -13,15 +13,22 @@
     <string name="old_password_hint">Old password</string>
     <string name="new_password_hint">New password</string>
     <string name="post_title_hint">Post Title:</string>
+    <string name="respond_button">Respond</string>
+    <string name="up_vote_button">&#9650;</string>
+    <string name="down_vote_button">&#9660;</string>
     <string name="confirm_new_password_hint">Confirm New Password</string>
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
-    <string name="cred_hint">Credentials</string>
-    <string name="medical_bio_hint">Medical Bio</string>
+    <string name="credentials">Credentials</string>
+    <string name="medical_bio">Medical Bio</string>
+    <string name="share_medical_bio">Share Medical Bio</string>
     <string name="post_text_hint">Enter a description of your symptoms.</string>
+    <string name="response_text_hint">Enter a response to this post.</string>
     <string name="login_button">Login</string>
     <string name="user_type_switch">User Type:</string>
     <string name="register_button">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="telephone_hint">Enter phone number</string>
     <string name="edit_profile_button">Submit Changes</string>
     <string name="create_post_button">Create Post</string>
     <string name="doctor_label">Doctor</string>
@@ -31,5 +38,7 @@
     <string name="update_last_name_label">Update your last name:</string>
     <string name="update_password_label">Update your password:</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_response">ResponseActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

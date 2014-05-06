@@ -2,10 +2,11 @@ package dbLayout;
 
 import java.util.List;
 
-import entity.Doctor;
-import entity.Patient;
-import entity.Post;
-import entity.User;
+import entities.Doctor;
+import entities.Patient;
+import entities.Post;
+import entities.Response;
+import entities.User;
 import android.content.Context;
 import android.database.sqlite.*;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -25,6 +26,7 @@ public class DatabaseManager {
 	private PatientTableManager patientTable = new PatientTableManager("Patient");
 	private DoctorTableManager doctorTable = new DoctorTableManager("Doctor");
 	private PostTableManager postTable = new PostTableManager("Post");
+	private ResponseTableManager responseTable = new ResponseTableManager("Response");
 	
 	/**
 	 * Initializes this database manager with the given context.
@@ -102,12 +104,32 @@ public class DatabaseManager {
 		close();
 	}
 	
+	public void updatePatient(Patient p) {
+		open();
+		patientTable.update(database, p);
+		close();
+	}
+	
+	public void updateDoctor(Doctor d) {
+		open();
+		doctorTable.update(database, d);
+		close();
+	}
+	
 	public User getUser(String email) {
 		return userTable.getUser(database, email);
 	}
 	
+	public User getUserByPhone(String pn) {
+		return userTable.getUserByPhone(database, pn);
+	}
+	
 	public long createPost(Post p) {
 		return postTable.create(database, p);
+	}
+	
+	public long createResponse(Response r) {
+		return responseTable.create(database, r);
 	}
 	
 	public Patient getPatient(User user) {
@@ -116,6 +138,13 @@ public class DatabaseManager {
 	
 	public Doctor getDoctor(User user) {
 		return doctorTable.getDoctor(database, user.getUserId());
+	}
+	
+	public Post getPost(long postId) {
+		open();
+		Post p = postTable.get(database, postId);
+		close();
+		return p;
 	}
 	
 	public List<Post> getPosts(User user) {
@@ -131,6 +160,30 @@ public class DatabaseManager {
 		close();
 		return posts;
 	}
+	
+	public List<Response> getAllResponses(long postId) {
+		open();
+		List<Response> responses = responseTable.getAllResponses(database, postId);
+		close();
+		return responses;
+	}
+	
+	public List<Response> getResponses(Post p, User u) {
+		open();
+		List<Response> responses = responseTable.getResponses(database, 
+				u.getUserId(), p.getPostId());
+		close();
+		return responses;
+	}
+	
+	public int incrementNumVotes(long responseId) {
+		return responseTable.incrementNumVotes(database, responseId);
+	}
+	
+	public int decrementNumVotes(long responseId) {
+		return responseTable.decrementNumVotes(database, responseId);
+	}
+	
 	
 	/**
 	 * Inner class that creates/upgrades and opens a connection to a database.
@@ -149,6 +202,7 @@ public class DatabaseManager {
 			patientTable.createTable(db);
 			doctorTable.createTable(db);
 			postTable.createTable(db);
+			responseTable.createTable(db);
 		}
 
 		@Override
@@ -157,6 +211,7 @@ public class DatabaseManager {
 			patientTable.deleteTable(db);
 			doctorTable.deleteTable(db);
 			postTable.deleteTable(db);
+			responseTable.deleteTable(db);
 			db.setVersion(newVersion); //Update version
 			onCreate(db);
 		}

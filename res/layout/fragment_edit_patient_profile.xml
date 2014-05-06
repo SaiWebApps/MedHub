@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="patientProfile.fragments.EditPatientProfileFragment" >
+    tools:context="fragment.EditPatientProfileFragment" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -66,6 +66,19 @@
             android:layout_height="wrap_content"
             android:hint="@string/confirm_new_password_hint"
             android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/updateMedicalBioLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="@string/medical_bio" />
+
+        <EditText
+            android:id="@+id/newMedicalBio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/medical_bio" />
 
         <Button
             android:layout_width="fill_parent"

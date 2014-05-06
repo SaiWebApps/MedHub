@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import entity.Patient;
+import entities.Patient;
 
 public class PatientTableManager extends EntityTableManager<Patient> {
 
@@ -98,5 +98,20 @@ public class PatientTableManager extends EntityTableManager<Patient> {
 				c.close();
 			}
 		}
+	}
+	
+	public void update(SQLiteDatabase db, Patient p) {
+		String bio = p.getMedicalBio();
+		Patient orig = get(db, p.getUserId());
+		ContentValues vals = new ContentValues();
+
+		if (orig == null) {
+			return;
+		}
+		if (orig.getMedicalBio() == null || !orig.getMedicalBio().equals(bio)) {
+			vals.put("medicalBio", bio);
+		}
+
+		db.update(getTableName(), vals, "userId=" + p.getUserId(), null);
 	}
 }

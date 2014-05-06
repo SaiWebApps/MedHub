@@ -1,6 +1,6 @@
 package dbLayout;
 
-import entity.User;
+import entities.User;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -22,7 +22,7 @@ public class UserTableManager extends EntityTableManager<User> {
 		buf.append("firstName TEXT NOT NULL,");
 		buf.append("lastName TEXT NOT NULL,");
 		buf.append("type INTEGER NOT NULL,");
-		buf.append("score INTEGER NOT NULL)");
+		buf.append("telephoneNumber TEXT NOT NULL)");
 
 		try {
 			db.execSQL(buf.toString());
@@ -46,7 +46,7 @@ public class UserTableManager extends EntityTableManager<User> {
 			u.setPassword(c.getString(c.getColumnIndexOrThrow("password")));
 			u.setFirstName(c.getString(c.getColumnIndexOrThrow("firstName")));
 			u.setLastName(c.getString(c.getColumnIndexOrThrow("lastName")));
-			u.setScore(c.getInt(c.getColumnIndexOrThrow("score")));
+			u.setTelephoneNumber(c.getString(c.getColumnIndexOrThrow("telephoneNumber")));
 			u.setType(c.getInt(c.getColumnIndexOrThrow("type")));
 			return u;
 		} catch (Exception e) {
@@ -71,7 +71,7 @@ public class UserTableManager extends EntityTableManager<User> {
 			u.setPassword(c.getString(c.getColumnIndexOrThrow("password")));
 			u.setFirstName(c.getString(c.getColumnIndexOrThrow("firstName")));
 			u.setLastName(c.getString(c.getColumnIndexOrThrow("lastName")));
-			u.setScore(c.getInt(c.getColumnIndexOrThrow("score")));
+			u.setTelephoneNumber(c.getString(c.getColumnIndexOrThrow("telephoneNumber")));
 			u.setType(c.getInt(c.getColumnIndexOrThrow("type")));
 			return u;
 		} catch (Exception e) {
@@ -83,6 +83,31 @@ public class UserTableManager extends EntityTableManager<User> {
 		}
 	}
 
+	public User getUserByPhone(SQLiteDatabase db, String pn) {
+		Cursor c = null;
+		User u = null;
+
+		try {
+			u = new User();
+			c = db.rawQuery("SELECT * FROM " + getTableName() + " WHERE telephoneNumber=" + pn, null);
+			c.moveToFirst();
+			u.setUserId(c.getInt(c.getColumnIndexOrThrow("userId")));
+			u.setEmail(c.getString(c.getColumnIndexOrThrow("email")));
+			u.setPassword(c.getString(c.getColumnIndexOrThrow("password")));
+			u.setFirstName(c.getString(c.getColumnIndexOrThrow("firstName")));
+			u.setLastName(c.getString(c.getColumnIndexOrThrow("lastName")));
+			u.setTelephoneNumber(pn);
+			u.setType(c.getInt(c.getColumnIndexOrThrow("type")));
+			return u;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (c != null) {
+				c.close();
+			}
+		}
+	}
+	
 	@Override
 	public long create(SQLiteDatabase db, User u) {
 		//Do not create user if he/she already exists.
@@ -98,7 +123,7 @@ public class UserTableManager extends EntityTableManager<User> {
 		userProperties.put("firstName", u.getFirstName());
 		userProperties.put("lastName", u.getLastName());
 		userProperties.put("type", u.getType());
-		userProperties.put("score", u.getScore());
+		userProperties.put("telephoneNumber", u.getTelephoneNumber());
 
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {

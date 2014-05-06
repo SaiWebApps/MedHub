@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import entity.Post;
+import entities.Post;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -26,8 +26,7 @@ public class PostTableManager extends EntityTableManager<Post> {
 		buf.append("userId INTEGER NOT NULL,");
 		buf.append("timestamp TEXT NOT NULL,");
 		buf.append("postTitle TEXT NOT NULL,");
-		buf.append("postText TEXT NOT NULL,");
-		buf.append("numViews INTEGER NOT NULL)");
+		buf.append("postText TEXT NOT NULL)");
 
 		try {
 			db.execSQL(buf.toString());
@@ -51,7 +50,6 @@ public class PostTableManager extends EntityTableManager<Post> {
 			p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
 			p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
 			p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
-			p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
 			return p;
 		} catch (Exception e) {
 			return null;
@@ -76,7 +74,6 @@ public class PostTableManager extends EntityTableManager<Post> {
 				p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
 				p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
 				p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
-				p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
 				postList.add(p);
 			}
 			return postList;
@@ -103,7 +100,6 @@ public class PostTableManager extends EntityTableManager<Post> {
 				p.setPostText(c.getString(c.getColumnIndexOrThrow("postText")));
 				p.setTimestamp(c.getString(c.getColumnIndexOrThrow("timestamp")));
 				p.setPostTitle(c.getString(c.getColumnIndexOrThrow("postTitle")));
-				p.setNumViews(c.getInt(c.getColumnIndexOrThrow("numViews")));
 				postList.add(p);
 			}
 			return postList;
@@ -131,7 +127,6 @@ public class PostTableManager extends EntityTableManager<Post> {
 		userProperties.put("postText", p.getPostText());
 		userProperties.put("postTitle", p.getPostTitle());
 		userProperties.put("timestamp", timestamp);
-		userProperties.put("numViews", 1);
 
 		long newId = db.insert(getTableName(), null, userProperties);
 		if (newId == -1) {

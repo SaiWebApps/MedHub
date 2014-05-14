@@ -120,7 +120,7 @@ public abstract class BaseActivity extends FragmentActivity implements TabListen
 
 	@Override
 	public void onTabSelected(android.app.ActionBar.Tab tab,
-			android.app.FragmentTransaction ft) {				
+			android.app.FragmentTransaction ft) {
 		//Tab listener conveys index of selected tab to viewPager.
 		viewPager.setCurrentItem(tab.getPosition());
 	}
